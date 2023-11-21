@@ -1,0 +1,27 @@
+# No Creds Req
+Invoke-WebRequest -Uri <source> -OutFile <destination>
+
+--> Invoke-WebRequest -Uri http://10.10.10.10/data/file.txt -OutFile /path/to/output.txt
+
+
+# Creds Req
+Invoke-WebRequest -Uri source -OutFile destination -Credential credential
+
+--> Invoke-WebRequest -Uri http://10.10.10.10/data/file.txt -OutFile /path/to/output.txt -Credential Get-Credential
+
+
+# Using Start-BitsTransfer
+Start-BitsTransfer -Source $source -Destination $destination
+
+--> Start-BitsTransfer -Source http://10.10.10.10/data/file.txt -Destination /path/to/output.txt
+
+
+# Download Multiple Files with SBT
+create csv with 2 cols
+```
+# source,destination
+http://speedtest.tele2.net/1MB.zip,c:\dload\1MB.zip
+http://speedtest.tele2.net/10MB.zip,c:\dload\10MB.zip
+```
+lalu run
+Import-Csv .\filelist.csv | Start-BitsTransfer

@@ -1,0 +1,6 @@
+Hanya percaya pada line **Received:** karena line lain bisa dimanipulasi
+
+cari original sender dari `X-Originating-IP`
+jika `X-Originating-IP` tidaka ada, kita perlu cari di `Received` header.
+
+car informasi dari IP dengan `hxxp://www.arin.net`

@@ -1,0 +1,16 @@
+terminator shortcut
+CTRL + SHIFT + E = Vertical Split
+CTRL + SHIFT + O = Horizontal Split
+CTRL + SHIFT + W = Close kotak saat ini
+CTRL + SHIFT + Z = Zoom in/out buat fokus ke spesifik kotak
+ALT + ARROW atas/bawah/kanan/kiri = pindah kotak terminal
+
+bash shortcut
+ALT + Backspace = Delete satu kata sebelum kursor
+ALT + D = Delete satu kata setelah kursor
+CTRL + U = Delete semua hal sebelum kursor
+CTRL + K = Delete semua hal setelah kursor
+CTRL + R = Cari history command yang pernah digunakan
+CTRL + A = pergi ke bagian awal command
+CTRL + E = pergi ke bagian akhir command
+

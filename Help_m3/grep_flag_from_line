@@ -1,0 +1,2 @@
+grep 'THM{[A-Z]}'
+grep 'THM{[0-9]}'

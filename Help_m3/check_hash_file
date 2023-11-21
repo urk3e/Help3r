@@ -1,0 +1,5 @@
+md5sum <nama file>
+
+sha1sum <nama file>
+
+sha256sum <nama file>

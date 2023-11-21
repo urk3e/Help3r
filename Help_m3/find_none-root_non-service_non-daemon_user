@@ -1,0 +1,5 @@
+nama-namanya:
+cat /etc/passwd | grep -v "^#" | awk -F ':' '$3 > 999 { print $1 }'
+
+jumlahnya:
+grep -F -v "/bin/bash" /etc/passwd | grep -v "^#" | awk -F ':' '$3 > 999 { if ( -d $6 ) count++ } END { print count }'

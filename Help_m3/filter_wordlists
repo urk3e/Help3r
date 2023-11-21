@@ -1,0 +1,13 @@
+pakai awk
+
+`awk 'length($0) >= 10' rockyou.txt` --lebih dari sama dengan 10 karakter
+
+
+pakai grep
+
+` grep -E "^[0-9A-Za-z]{4}$" /usr/share/wordlists/rockyou.txt > wordlists4char.txt`
+
+
+pakai perl
+
+`perl -lne 'print if length() >= 10' rockyou.txt`

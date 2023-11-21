@@ -1,0 +1,34 @@
+exit = kill session
+
+
+prefix + % = split horizontal
+prefix + " = split vertical
+prefix + d = detach session / lepas session
+prefix + s = session list
+prefix + $ = rename session
+prefix + c = buat window baru
+prefix + , = rename window (current)
+prefix + p = pindah windows sebelum
+prefix + n = pindah windows next
+prefix + & = kill window
+
+
+tmux ls = list session yang ada
+tmux a = connect ke session terakhir yang attach
+tmux a -t <id_session> = connect ke session tertentu
+tmux = buat session baru (harus keluar current session dulu, bisa detach atau kill)
+
+
+SHIFT + arrow kanan kiri = pindah window
+ALT + arrow key = pindah pane
+
+
+# step-by-step Copy Paste Mode
+- prefix + [ = masuk copy mode
+- taruh kursor ke posisi teks yang mau dicopy
+- shift + ? + KEYWORD = gunakan untuk search teks yang mau di copy
+- shift + ? + [a-z]+KEYWORD = juga untuk search
+- mulai highlight "v"
+- lalu Yank teks yang sudah di highlight dengan "y"
+- prefix + ] = paste
+- prefix + P = paste

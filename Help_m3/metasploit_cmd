@@ -1,0 +1,18 @@
+[+] UNTUK RUN LISTENER DENGAN PORT DIBAWAH 1024, PERLU RUN MENGGUNAKAN SUDO
+
+
+search = untuk search
+options = untuk tahu apa yang perlu di set
+use = untuk menggunakan exploit/payload/auxiliary
+set <options> = untuk set parameter yang diperlukan module
+unset <options> / unset all= untuk unset parameter yang diperlukan module
+setg <options> = untuk set parameter yang diperlukan module untuk semua module
+unsetg <options> / unsetg all = untuk unset parameter yang diperlukan module untuk semua module
+run / exploit = untuk memulai proses exploit atau run proses
+show <auxiliary/payloads/exploits/options/etc> = untuk menampilkan pilihan yang terkait, jika digunakan pada saat sudah memilih exploit misal (windows/smb/ms17_010_eternalblue) maka nantinya akan menampilkan payload yang dapat digunakan bersamaan dengan exploit tersebut.
+back = untuk kembali ke console context tanpa penggunaan apapun
+info = untuk mengetahui lebih lanjut tentang exploit/payload/aux yang digunakan
+check = untuk cek apakah target sistem vuln tanpa melakukan exploitasi
+background = untuk memindahkan session ke background
+sessions = untuk melihat session yang terbuka
+sessions -i <number> = untuk berinteraksi dengan session sesuai pilihan angka
