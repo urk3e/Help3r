@@ -1,0 +1,19 @@
+get PID
+`pidof nama_proses`
+`pgrep nama_proses`
+
+cek cronjob
+`crontab -l`
+
+systemctl
+`systemctl list-unit-files`
+`systemctl list-unit-files | grep enabled`
+`systemctl status nama_unit`  <- cek status proses
+
+stop it
+`sudo systemctl stop nama_unit`
+`sudo systemctl disable nama_unit`
+`systemctl status nama_unit`
+`sudo rm -rf load_path`
+`sudo rm -rf path`
+`systemctl daemon-reload`

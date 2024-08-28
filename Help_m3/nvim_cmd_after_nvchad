@@ -1,0 +1,30 @@
+CTRL + T + H = theme
+
+TSInstall language = install syntax highlght
+TSInstallInfo = cek syntax highlight yang terinstall
+
+# File Related
+CTRL + N = memunculkan file tree disebelah kiri
+M = markfile yang ada di file tree
+A = buat file baru dengan langsung memberi nama file
+C = copy file yang ada di file tree
+P = paste file yang sudah di copy lewat file tree
+R = rename file
+
+# File Related
+SPACE + F + F = search file dengan search bar
+SPACE + F + B = search file yang sudah terbuka
+TAB = pindah ke tab atau file yang sudah terbuka
+SHIFT + TAB = reverse
+
+# NVIM
+SPACE + C + H = cheatsheet dari nvim
+<leader> = SPACE
+
+# Split
+:vsp = vertikal split
+sp:sp = split
+
+# Command Line
+CTRL + H = memunculkan commandline dengan split horizontal
+CTRL + V = memunculkan commandline dengan split vertikal 

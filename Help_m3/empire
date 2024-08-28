@@ -1,0 +1,6 @@
+sudo powershell-empire server
+sudo powershell-empire client
+
+username: empireadmin
+password: password123
+

@@ -1,0 +1,10 @@
+/var/log/apache2/access.log
+/etc/apache2/apache2.conf
+/etc/httpd/httpd.conf
+/etc/httpd/conf/httpd.conf
+
+if complied from source, user /usr/local or /opt
+/usr/local/apache2/apache2.conf
+
+windows
+C:Program Files/Apache Software Foundation/Apache2.4

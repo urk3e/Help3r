@@ -1,0 +1,5 @@
+netcat sebagai server:
+	`nc -lvnp PORT-local`
+
+netcat sebagai client:
+	`nc IP/Domain_target PORT`

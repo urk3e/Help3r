@@ -1,0 +1,2 @@
+`smbmap -H IP`
+`enum4linux -US IP`

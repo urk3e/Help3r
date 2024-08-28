@@ -1,0 +1,16 @@
+Conditions di bash:
+	- `>` `-gt` greater than
+	- `==` `-eq` equal to
+	- `!=` `-ne` not equal to
+	- `<` `-lt` less than
+	- `>=` `-ge` greater than or equal to
+	- `<=` `-le` less than or equal to`
+	- `if [$in -ge 3]; then` sama dengan `if test $in -ge 3;
+	- `-f` cek jika regularfile ada `if [ -f regularfile];`
+	- `-r` cek jika file dpt dibaca `if [ -r file];
+	- `if <cond>; then <comm>; fi`
+	- `if <cond>; then <comm>; elif <cond>; then <comm>; else <comm>; fi
+	- `!` untuk invert kondisi `! -f file`
+	- `-a` and
+	- `-o` or
+	- `-L` cek apakah ada symlink di file

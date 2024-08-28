@@ -1,0 +1,7 @@
+Basic Enum
+	- `query{__schema{types{name,fields{name}}}}`
+	- `query{__schema{types{name,fields{name,args{name,description,type{name,kind,ofType{name, kind}}}}}}}`
+
+	- `query {__type(name: "Bugs"){name fields{name}}}`
+	- `query {allBugs {edges {node {id reporterId private reporter {id username}}}}}`
+

@@ -1,0 +1,10 @@
+cek pertama kali Windows assign special priv ke login baru waktu compromise
+  - ke Event viewer
+  - create Custom View
+  - ubah Logged dari "Anytime" ke waktu compromise
+  - set Event Log ke System
+  - OK
+  - cari `Task Category : Security Group Management`
+
+cek /etc/hosts di Windows
+  - cat C:\Windows\System32\drivers\etc\hosts

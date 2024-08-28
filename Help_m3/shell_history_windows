@@ -1,0 +1,19 @@
+```
+# cmd
+
+type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+
+
+# powsh
+
+type $Env:userprofile\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+```
+
+# melihat windows saved creds
+```
+cmdkey /list
+```
+# jika melihat ada creds yang bisa dicoba, gunakan
+```
+runas /savecred /user:admin cmd.exe
+```

@@ -1,0 +1,1 @@
+wfuzz -c -z file,/usr/share/wordlists/seclists/Discovery/Web-Content/api/objects.txt -X POST --hc 404,400 http://<IP>/api/items\?FUZZ\=test

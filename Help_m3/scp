@@ -1,0 +1,7 @@
+```
+scp target@IP-addr:/path/to/file/target /path/to/local/save
+```
+
+```
+scp local.file target@IP-addr:/path/to/target/save
+```

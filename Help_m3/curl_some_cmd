@@ -1,0 +1,19 @@
+`curl -vvv -u admin:admin http://IP:PORT/`
+
+`curl -vvv http://admin:admin@IP:PORT/`
+
+`curl -H 'Authorization: Basic s0mEb4s364=' http://IP:PORT/`
+
+`curl 'http://<SERVER_IP>:<PORT>/search.php?search=le' -H 'Authorization: Basic YWRtaW46YWRtaW4='
+
+`curl http://<SERVER_IP>:<PORT>/api.php/city/london`
+
+`curl -s http://<SERVER_IP>:<PORT>/api.php/city/ | jq`
+
+`curl -X POST http://<SERVER_IP>:<PORT>/api.php/city/ -d '{"city_name":"HTB_City", "country_name":"HTB"}' -H 'Content-Type: application/json'`
+
+`curl -X PUT http://<SERVER_IP>:<PORT>/api.php/city/london -d '{"city_name":"New_HTB_City", "country_name":"HTB"}' -H 'Content-Type: application/json'`
+
+`curl -X DELETE http://<SERVER_IP>:<PORT>/api.php/city/New_HTB_City`
+
+`

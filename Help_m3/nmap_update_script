@@ -1,0 +1,4 @@
+`sudo wget -O /usr/share/nmap/scripts/<scripts-name>.nse https://svn.nmap.org/nmap/scripts/<script-name>.nse`
+
+`nmap --script-updatedb`
+

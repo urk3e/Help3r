@@ -1,0 +1,17 @@
+Get-ChildItem = list current dir
+	-Path = untuk specified path ke satu atau lebih lokasi (Wildcards accepted)
+	-File/-Directory = untuk mendapat list files dan dir.
+	-Filter = untuk menggunakan Filter
+	-Recurse = untuk get item pada specified dir
+	-Hidden = untuk melihat hidden dir/file
+	-ErrorAction SulentlyContinue = specified action yang akan diambil jika command menemukan error
+
+`net users` = listing user yang ada
+`net users nama_user` = listing informasi soal user
+`systeminfo | findstr /B /C: "OS Name"/C: "OS Version" = cari tau info OS
+`wmic service list` = listing semua service yang terinstall
+`findstr` = seperti grep
+`type` == `cat`
+
+`GetLocalGroupMember -Group "Administrator"` = dapatkan list user admin priv
+`GetScheduledTask` = cek scheduled task

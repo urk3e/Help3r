@@ -1,0 +1,17 @@
+# build docker
+`docker build -t nama`
+
+# run docker
+`docker run -d -p 1337:80 nama_image`    <-- detach setelah run
+`docker run --rm -p 1370:80 nama_image`  <-- langsung delete instance ketika stop.
+
+# check instance yang up
+`docker ps`
+
+# check all instance
+`docker ps -a`
+
+# stop instance
+`docker stop container_name`
+`docker stop container_id`
+

@@ -1,0 +1,25 @@
+-T0..5 = 0[stealthiest]...5[most aggressive]
+
+--script nama-script
+
+-A = scan host dengan OS dan version detection, script scanning, traceroute
+
+-O = OS deteksi
+
+-sV = scan host dengan TCP untuk deteksi versi
+
+`nmap -sW IP-target` -- scan window
+`nmap -sA IP-target` -- scan Ack
+`nmap -sT IP-target` -- scan TCP
+`nmap -sU IP-target` -- scan UDP
+
+`nmap --scanflags RSTSYNFINACKTCPUDPURG IP-target` -- custom scan flag
+
+SPOOFING
+`nmap -S SPOOFED_IP IP-target`
+`nmap -e NETWORK_INTERFACE -Pn -S SPOOFED_IP IP-target`
+`nmap --spoof-mac SPOOFED_MAC`
+
+DECOYING
+`nmap -D DECOY1,IP-Attack,DECOY2 IP-target`
+

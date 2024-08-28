@@ -1,0 +1,2 @@
+`cewl -d 2 -m 5 -w file.txt http://site --with-numbers`
+`cewl -d 4 -m 10 -w file.txt http://site --lowercase`

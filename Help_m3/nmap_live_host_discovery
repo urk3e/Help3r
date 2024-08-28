@@ -1,0 +1,15 @@
+Live host discovery
+-sn = nmap scan hanya host tanpa port
+
+`sudo nmap -PR -sn IP-target/24` -- ARP scan
+
+`nmap -PE -sn IP-target/24` -- ICMP echo ping requests
+`nmap -PP -sn IP-target/24` -- ICMP timestamp requests
+`nmap -PM -sn IP-target/24` -- ICMP address mask requests
+
+`nmap -PS -sn IP-target/24` OR `sudo nmap -PS22,80,443 -sn IP-target/24` -- TCP Syn Ping
+`nmap -PA -sn IP-target/24` OR `sudo nmap -PA22,80,443 -sn IP-target/24` -- TCP Ack Ping
+`nmap -PU -sn IP-target/24` OR `sudo nmap -PU2,80,443 -sn IP-target/24`-- UDP packet
+
+-n = skip kirim DNS queries
+-R = query DNS server bahkan untuk offline hosts

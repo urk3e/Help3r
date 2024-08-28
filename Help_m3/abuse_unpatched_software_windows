@@ -1,0 +1,16 @@
+# Unpatched Software
+Software yang terinstall di target sistem dapat memberikan berbagai kesempatan privesc. Sedangkan untuk drivers, orgz dan user kemungkinan tidak melakukan update sesering update sistem operasi. Kita dapat menggunakan `wmic` tool untuk list software installed di target sistem. Kita dapat menggunakannya dengan
+```
+wmic product get name,version,vendor
+...
+Microsoft Visual C++ 2019 X64 Minimum Runtime - 14.28.29910     Microsoft Corporation                    14.28.29910
+AWS Tools for Windows                                           Amazon Web Services Developer Relations  3.15.1248
+VNC Server 6.8.0                                                RealVNC                                  6.8.0.45849
+Amazon SSM Agent                                                Amazon Web Services                      3.0.529.0
+aws-cfn-bootstrap                                               Amazon Web Services                      2.0.5
+Druva inSync 6.6.3                                              Druva Technologies Pte. Ltd.             6.6.3.0
+AWS PV Drivers                                                  Amazon Web Services                      8.3.4
+Microsoft Visual C++ 2019 X64 Additional Runtime - 14.28.29910  Microsoft Corporation                    14.28.29910
+```
+selanjutnya bisa cari exploitnya lewat versi
+

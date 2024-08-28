@@ -1,0 +1,2 @@
+`crunch <min_len_pass> <max_len_pass> <charset_yg_diinginkan> -o file.txt`
+-	`crunch 3 3 0123456789ABCDEF -o file.txt`

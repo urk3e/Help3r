@@ -1,0 +1,10 @@
+- `getuid` cek priv
+- `use priv` load module privesc di meterpreter
+- `getsystem` mulai privesc otomatis
+- `getuid` cek priv
+
+in case `getsystem` gagal
+- `run post/multi/recon/local_exploit_suggester SHOWDESCRIPTION=true`
+- bg session saat ini
+- set exploit yang didapat dengan option pada saat `suggester` set di session nya juga
+- run exploit

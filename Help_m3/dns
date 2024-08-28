@@ -1,0 +1,5 @@
+`dig site.com -t TXT`
+
+`nslookup -type=txt site.com`
+
+`nslookup -type=txt site.com 1.1.1.1`

@@ -1,0 +1,4 @@
+`showmount -e IP/target`
+
+connect:
+`sudo mount -t nfs IP:/shared-dir /path/to/local`

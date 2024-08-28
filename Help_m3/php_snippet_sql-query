@@ -1,0 +1,15 @@
+```
+// Execute an SQL query
+$query = "SELECT * FROM tbl_ornaments WHERE colour = 'Green'";
+$result = sqlsrv_query($conn, $query);
+```
+
+
+```
+// Retrieve the GET parameter and save it as a variable
+$colour = $_GET['colour'];
+
+// Execute an SQL query with the user-supplied variable
+$query = "SELECT * FROM tbl_ornaments WHERE colour = '$colour'";
+$result = sqlsrv_query($conn, $query);
+```

@@ -1,0 +1,13 @@
+connect ke smb
+`
+smbclient //IP-target/sharename
+`
+
+dengan user
+`
+smbclient -U namauser //IP/sharenya
+`
+
+
+upload jika sudah terkoneksi
+`put nama_file`

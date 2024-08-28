@@ -1,0 +1,31 @@
+``` DIRBURST
+ffuf -ic -w /usr/share/wordlists/seclists/Discovery/Web-Content/big.txt -u http://10.10.59.92/FUZZ
+```
+
+``` PARAMETER GET
+ffuf -ic -w /usr/share/wordlists/seclists/Discovery/Web-Content/burp-parameter-names.txt -u http://faculty.academy.htb:56044/courses/linux-security.php7\?FUZZ\=asd -ic -v -t 60 -fs xxx
+```
+
+``` PARAMETER VALUE POST
+ffuf -ic -w /usr/share/wordlists/seclists/anything.txt -u http://web.com:PORT/courses/linux-security.php7 -d 'username=FUZZ' -H 'Content-Type: application/x-www-form-urlencoded' -X POST -v -t 60 -fs xxx
+```
+
+``` PARAMETER POST
+ffuf -ic -w /usr/share/wordlists/seclists/anything.txt -u http://web.com:PORT/courses/linux-security.php7 -d 'FUZZ=asd' -H 'Content-Type: application/x-www-form-urlencoded' -X POST -v -t 60 -fs xxx
+```
+
+``` DIRBURST recursive
+ffuf -ic -w /usr/share/wordlists/seclists/anything.txt -u http://web.com:PORT/FUZZ -v -t 60 -recursion-depth 2
+```
+
+``` EXTENSION BURST
+ffuf -ic -w /usr/share/wordlists/seclists/anything.txt -u http://web.com:PORT/indexFUZZ -v -t 120
+```
+
+```
+ffuf -ic -w /usr/share/wordlists/seclists/anything.txt -u http://faculty.academy.htb:47780/courses/FUZZ -v -e .php,.phps,.html -t 50 -fs xxx
+```
+
+``` RELAY TO PROXY
+ffuf -u http://10.10.59.232/FUZZ -c -w /usr/share/seclists/Discovery/Web-Content/common.txt -replay-proxy http://127.0.0.1:8080
+```

@@ -1,0 +1,4 @@
+# mencari credentials mengenai proxy config yang memiliki cleartext authentication
+```
+reg query HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\ /f "Proxy" /s
+```

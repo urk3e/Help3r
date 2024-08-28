@@ -1,0 +1,4 @@
+`dig target.com type`
+
+contoh : 
+	`dig google.com mx`

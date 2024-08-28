@@ -1,0 +1,18 @@
+`nslookup <options> <domain_name> <server>`
+
+<options> :
+	A = IPv4
+	AAAA = IPv6
+	CNAME = Canonical Name
+	MX = Mail Server
+	SOA = Start of Authority
+	TXT = TXT Records
+
+<server> :
+	Cloudflare = 1.1.1.1 atau 1.0.0.1
+	Google = 8.8.8.8 atau 8.8.4.4
+	Quad9 = 9.9.9.9 atau 149.112.112.112
+	dan banyak lagi (serach "public dns")
+
+
+contoh : `nslookup -type=a target.com 1.1.1.1`

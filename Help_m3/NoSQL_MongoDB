@@ -1,0 +1,15 @@
+`show databases` = untuk menampilkan db yang ada
+`use db_name` = untuk menggunakan db yang ada dan membuat db jika db tidak ada
+
+`db.getCollectionNames()` = untuk menampilkan "tabel" apa saja yang ada dalam db
+`db.createCollections('tabel')` = untuk membuat Collection atau tabel pada database yang digunakan
+
+`db.<collectionName>.insert({id:'1', col1:'value', col2:'value'})` = mengisi db
+`db.<collectionName>.find()` = untuk menampilkan isi tabel atau collection
+`db.<collectionName>.update({id:"1"}, {$set: {col:'value'}}) = untuk update isi tabel
+`db.<collectionName>.remove({'id':'2'})` = untuk menghapus isi tabel
+`db.<collectionName>.drop()` = untuk menghapus tabel
+
+`db.<collectionName>.find({query})`    -|
+   					| untuk mencari data pada tabel 
+`db.<collectionName>.findOne({query})` -|

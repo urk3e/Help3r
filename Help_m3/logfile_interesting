@@ -1,0 +1,9 @@
+/var/log/auth.log -login atempt (ssh, login as other user) etc
+
+/var/log/syslog -sys event seperti fw alerts
+
+/var/log/<service/
+|_ contoh : /var/log/apache2/access.log
+|_ etc.
+
+/var/log/nginx/access.log

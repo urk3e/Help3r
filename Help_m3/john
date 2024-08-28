@@ -1,0 +1,1 @@
+`john --wordlist=path/to/wordlists hash.txt`

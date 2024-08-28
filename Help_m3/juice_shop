@@ -1,0 +1,4 @@
+# WSL
+`sudo service docker start`
+`docker pull bkimminich/juice-shop` <--downloading
+`docker run --rm -p 3000:3000 bkimminich/juice-shop` <--run

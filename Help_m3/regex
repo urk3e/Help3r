@@ -1,0 +1,48 @@
+pilih kata yang mengandung "kamu"
+  - .*kamu.*
+
+pilih kata yang tidak mengandung "kita"
+  - ^(?!.*kita).*$
+
+pilih line kosong
+  - ^\s*$
+  - ^\s*
+
+match word regardless case
+  - [a-zA-Z]
+
+match any lowercase and uppercase alphanumeric
+  - [a-z0-9]
+  - [A-Z0-9]
+  - [a-zA-Z0-9]
+
+regex operator
+  - . (titik) merupakan wildcard
+  - * digunakan jika tidak peduli apakah token match sama sesuatu atau tidak
+  - + digunakan jika mau cari setidaknya 1 match
+  - {min, max} digunakan untuk specifies jumlah karakter untuk di match
+
+contoh penggunaan operator
+  - [a-zA-Z0-9]+ match alphanumeric dengan match 1 selama berisi letters dan numbers regardless case nya
+  - ^[a-zA-Z]+[0-9]*$ match string pada awalan regardless casenya terlepas ada angka setelahnya atau tidak
+  - ^[a-z]{3,9}$ berarti kita mau match hanya lowercase yang memiliki length antara 3-9 karakter
+  - ^[a-zA-Z]{3}.{3}$ berarti mau match string yang dimulai dengan 3 huruf diikuti dengna 3 char apa saja
+
+grouping () dan escaping \ dan optional ?
+contoh
+  - ^(www\.)?tryhackme\.com$ matching antara www.tryhackme dan tryhackme.com, avoid .tryhackme.com
+     - ^(www\.)? berarti marks awalan string, diikuti grouping www dan escape `.` , lalu diikutin `?` yang berarti akan match strings yang ada www. atau tidak pada awalan karena optional.
+     - tryhackme\.com$ `$` marks ending string, didahului tryhackme, dan escape `.` dan string com. Jika kita tidak escape `.` maka regex akan berpilir bahwa kita mau match any char antara tryhackme dan com juga.
+
+
+select kata dari x sampai y
+```
+https://webstore.playstation.com [␛[31m403␛[0m]
+http://web.prod-qa.playstation.com [␛[31m403␛[0m]
+http://webformsstage.playstation.com [␛[31m403␛[0m]
+https://www.qa.jp.playstation.com [␛[31m403␛[0m]
+http://wwwqa.community.playstation.com [␛[31m403␛[0m]
+```
+  - http[^ ]+\.com
+ 
+

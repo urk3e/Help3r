@@ -1,0 +1,5 @@
+mencari lokasi python diinstall
+`python3 -c "import sys;print(sys.path)"`
+
+mencari lokasi library
+`locate random.py`
