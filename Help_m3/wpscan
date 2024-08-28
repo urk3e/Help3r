@@ -1,0 +1,4 @@
+`wpscan --url website.com -e vp`
+`wpscan --url website.com -e vt`
+`wpscan --url website.com -e upt`
+`wpscan --url website.com -U username.txt -P password.txt`

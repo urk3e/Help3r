@@ -1,0 +1,7 @@
+`ip_addr == 10.10.10.10`
+`http contains web.com`
+`http.request.method == POST`
+`tcp.port == 445`
+`not tcp.port == 445`
+`ftp-data`
+`dns`

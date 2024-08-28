@@ -1,0 +1,11 @@
+`Get-WmiObject -Class win32_OperatingSystem`
+	`Get-WmiObject -Class win32_OperatingSystem | Select Version,BuildNumber,ComputerName`
+`Get-WmiObject -Class win32_Process`
+
+`Get-WmiObject -Class win32_Service`
+
+`Get-WmiObject -Class win32_Bios`
+
+`[System.Environment]::OSVersion`
+
+`Get-ChildItem -Force`

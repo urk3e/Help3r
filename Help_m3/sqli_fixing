@@ -1,0 +1,38 @@
+sqli fixing by data type validation
+```
+# Sebelum
+
+$query="select * from users where id=".$_GET['id'];
+$elves_rs=mysqli_query($db,$query);
+
+
+# Sesudah
+# mengubah tipe data input ke integer pakai `intval()`
+# mengubah tipe data input ke float pakai `floatval()`
+
+$query="select * from users where id=".intval($_GET['id']);
+```
+
+sqli fixing by prepared statements
+```
+# Sebelum
+
+$query="select * from toys where name like '%".$_GET['q']."%' or description like '%".$_GET['q']."%'";
+$toys_rs=mysqli_query($db,$query);
+
+
+# Sesudah
+## mengganti semua parameter dengan placeholder `?`, yang akan memberitahu db kita mau run query yang mengambil 2 parameter sebagai input
+## selanjutnya query akan diteruskan ke fungsi `mysqli_prepare()` daripada `mysqli_query()`, func ini akan memberitahu db untuk mempersiapkan query dengan syntax yang diberikan dan akan mempersiapkan statement.
+## selanjutnya gunakan func `mysqli_stmt_bind_param()` untuk attach variable ke placeholder. func ini memerlukan beberapa parameter, yaitu parameter pertama harus reference ke prepared statement untuk kemana variable akan di bind. parameter kedua merupakan string yang terdiri dari 1 letter per placeholder yang akan di bound, dimana letter mengindikasikan setiap variable data type. `"ss"` untuk data type string (karena ada 2 string jadi ada 2 s), `"i"` untuk integer, dan `"d"` untuk float. selanjutnya kita perlu menambahkan variable sesuai jumlah placeholder di query.
+## selanjutnya execute prepared statement dengan `mysqli_stmt_execute()` yang mana menerima statement dari `$stmt` hanya sebagai parameter.
+## setelah statement executed, kita dapat retrieve result dengan func `mysqli_stmt_get_result()`, dan menambahkan statement sebagai parameter saja, serta assign result ke sebuah variable
+
+$query="select * from toys where name like ? or description like ?";
+$stmt = mysqli_prepare($db, $query);
+$q = "%".$_GET['q']."%";
+mysqli_stmt_bind_param($stmt, 'ss', $q, $q);
+mysqli_stmt_execute($stmt);
+$toys_rs=mysqli_stmt_get_result($stmt);
+```
+

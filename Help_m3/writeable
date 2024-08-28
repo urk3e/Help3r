@@ -1,0 +1,2 @@
+`find / -writable 2>/dev/null`
+

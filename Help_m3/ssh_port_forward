@@ -1,0 +1,6 @@
+`ssh -L 3333:10.200.84.150:80 -i credential_found/web_ssh_priv compromised@10.200.84.200 -fN`
+
+compromised@<rhost-target> = compromised machine yang bisa kita konek lewat ssh
+<lport>:<rhost-network>:<rport-network> = - <lport> local port yang dipakai untuk forward ke localhost
+					  - <rhost-network> rhost target yang akan jadi tujuan port forwarding.
+					  - <rport-network> rport target yg akan jadi tujuan port forwarding.

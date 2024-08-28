@@ -1,0 +1,6 @@
+`select * from table_name where cols4 = 'string';`
+`select cols1,cols3,cols4, from table_name where cols5 = 12;`
+`insert into table_name (cols1, cols2, cols3, cols4, cols5) values (5, 105, 'string', 4.99, '2023-12-10');`
+`select name, password from user;`
+`select name, quantity from toys where quantity >= 40;`
+

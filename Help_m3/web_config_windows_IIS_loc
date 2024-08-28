@@ -1,0 +1,10 @@
+```
+
+    C:\inetpub\wwwroot\web.config
+    C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\web.config
+```
+
+# cara cepat untuk mencari database connection strings untuk file:
+```
+type C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\web.config | findstr connectionString
+```

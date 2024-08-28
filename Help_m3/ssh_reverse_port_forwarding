@@ -1,0 +1,11 @@
+1. lokal mesin:
+`ssh-keygen -f user-target`
+`cat user-target.pub` *copy isinya
+`chmod 600 user-target`
+
+2. target mesin:
+`cd .ssh`
+`echo "[isi key.pub yang sudah di copy]" > authorized_keys
+
+3. lokal mesin:
+`ssh -L port-lokal:127.0.0.1:port-lokal -i user-target user-target@IP`

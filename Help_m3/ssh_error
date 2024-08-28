@@ -1,0 +1,14 @@
+jika saat connect ke ssh error seperti berikut
+```bash
+ssh -p 2222 user@IP
+...
+Unable to negotiate with 172.16.42.42 port 22: no matching host key type found. Their offer: ssh-rsa
+```
+
+maka lakukan
+```bash
+nvim /home/user-local/.ssh/config
+...
+PubkeyAcceptedAlgorithms +ssh-rsa
+HostkeyAlgorithms +ssh-rsa
+```
